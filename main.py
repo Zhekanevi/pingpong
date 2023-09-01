@@ -10,6 +10,9 @@ window = display.set_mode((W, H))
 display.set_icon(image.load('tenis_ball.png'))
 display.set_caption("PING PONG 1VS1")
 window.fill(back)
+font.init()
+f1 = font.SysFont(None, 70, bold=True)
+f1 = font.SysFont(None, 50)
 
 class GameSprite(sprite.Sprite):
     # конструктор класу
@@ -38,22 +41,57 @@ class Player(GameSprite):
 
     def update_r(self):
         key_pressed = key.get_pressed()
-        if key_pressed[K_a] and self.rect.x > 0:
-            self.rect.x -= self.speed
-        if key_pressed[K_d] and self.rect.x < H-self.size_x:
-            self.rect.x += self.speed
+        if key_pressed[K_UP] and self.rect.y > 0:
+            self.rect.y -= self.speed
+        if key_pressed[K_DOWN] and self.rect.y < H-self.size_y:
+            self.rect.y += self.speed
 
-racket1 = Player('racket.png', 10, W/3, 50, 150, 5)
+
+
+
+racket1 = Player('racket.png', 10, H/3, 50, 150, 5)
+racket2 = Player('racket.png', W-50, H/2, 50, 150, 5)
+ball = GameSprite("tenis_ball.png", W/2, H/2, 50, 50, 7)
 print()
-
+speed_x, speed_y = 3, 3
+points1 = 0
+points2 = 0
 game = True
 finish = False
 while game:
-    time.delay(5)
     window.fill(back)
-    racket1.reset()
-    racket1.update_l()
     for e in event.get():
-        if e.type == QUIT:
-            game = False
+            if e.type == QUIT:
+                game = False
+    points1_txt = f1.render(str(points1), True, (200, 50, 65))
+    points2_txt = f1.render(str(points2), True, (200, 50, 65))
+    window.blit(points1_txt, (50, 20))
+    window.blit(points2_txt, (750, 20))
+    if not finish:
+        time.delay(10)
+        racket1.reset()
+        racket1.update_l()
+        racket2.reset()
+        racket2.update_r()
+        ball.reset()
+        ball.rect.x += speed_x
+        ball.rect.y += speed_y
+        
+        if ball.rect.y < 0 or ball.rect.y > H - 50:
+            speed_y *= -1
+
+        if sprite.collide_rect(ball, racket1) or sprite.collide_rect(ball, racket2):
+            speed_x *= -1
+  
+        if ball.rect.x > W-50:
+            points1 += 1
+            ball.rect.x = W/2 
+            ball.rect.y = H/2
+    
+        
+        if ball.rect.x < 0:
+            points2 += 1
+            ball.rect.x = W/2
+            ball.rect.y = H/2
+
     display.update()
