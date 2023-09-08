@@ -94,4 +94,9 @@ while game:
             ball.rect.x = W/2
             ball.rect.y = H/2
 
+    if points1 >= 5 or points2 >= 5:
+        win_txt = f1.render('Ти виграв', True, (255, 0, 0))
+        window.blit(win_txt, (300, 200))
+        finish = True
+
     display.update()
