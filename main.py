@@ -4,7 +4,7 @@ init()
 
 W = 800
 H = 500
-back = (0, 255, 120)
+back = (200, 255, 120)
 
 window = display.set_mode((W, H))
 display.set_icon(image.load('tenis_ball.png'))
@@ -63,8 +63,8 @@ while game:
     for e in event.get():
             if e.type == QUIT:
                 game = False
-    points1_txt = f1.render(str(points1), True, (200, 50, 65))
-    points2_txt = f1.render(str(points2), True, (200, 50, 65))
+    points1_txt = f1.render(str(points1), True, (250, 100, 65))
+    points2_txt = f1.render(str(points2), True, (250, 100, 65))
     window.blit(points1_txt, (50, 20))
     window.blit(points2_txt, (750, 20))
     if not finish:
